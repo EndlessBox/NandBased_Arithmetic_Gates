@@ -13,5 +13,9 @@ CHIP Inc16 {
     OUT out[16];
 
     PARTS:
-   // Put you code here:
+   Inc4(in=in[0..3], c=true, out=out[0..3], cOut=carry1);
+   Inc4(in=in[4..7], c=carry1, out=out[4..7], cOut=carry2);
+   Inc4(in=in[8..11], c=carry2, out=out[8..11], cOut=carry3);
+   Inc4(in=in[12..15], c=carry3, out=out[12..15], cOut=carry4);
+   
 }

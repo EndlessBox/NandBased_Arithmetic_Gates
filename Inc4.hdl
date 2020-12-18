@@ -1,0 +1,16 @@
+/**
+ * 4-bit incrementer:
+ * out = in + c (arithmetic addition)
+ */
+
+CHIP Inc4 {
+    IN in[4], c;
+    OUT out[4], cOut;
+
+    PARTS:
+   HalfAdder(a=c, b=in[0], sum=out[0], carry=carry1);
+   HalfAdder(a=carry1, b=in[1], sum=out[1], carry=carry2);
+   HalfAdder(a=carry2, b=in[2], sum=out[2], carry=carry3);
+   HalfAdder(a=carry3, b=in[3], sum=out[3], carry=cOut);
+
+}
