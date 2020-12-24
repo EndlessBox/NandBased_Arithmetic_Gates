@@ -27,9 +27,8 @@ CHIP ALU-nostat {
    Not(in=nx, out=Notnx);
 
 
-
-   Way16And1(a=x, b=Notzx, out=Outzx);  // when zx = 0
-   Not16(in=Outzx, out=NotOutzx);       // when zx = 1
+   Way16And1(a=x, b=Notzx, out=Outzx);
+   Not16(in=Outzx, out=NotOutzx);
 
    Way16And1(a=NotOutzx, b=nx, out=Outnx);
    Way16And1(a=Outzx, b=Notnx, out=OutNotnx);
