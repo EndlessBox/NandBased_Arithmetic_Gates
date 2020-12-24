@@ -1,0 +1,8 @@
+CHIP Way8And1 {
+    IN a[8], b;
+    OUT out[8];
+
+    PARTS:
+    Way4And1(a=a[0..3], b=b, out=out[0..3]);
+    Way4And1(a=a[4..7], b=b, out=out[4..7]);
+}

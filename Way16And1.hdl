@@ -1,0 +1,8 @@
+CHIP Way16And1 {
+    IN a[16], b;
+    OUT out[16];
+
+    PARTS:
+    Way8And1(a=a[0..7], b=b, out=out[0..7]);
+    Way8And1(a=a[8..15], b=b, out=out[8..15]);
+}

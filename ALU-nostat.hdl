@@ -1,0 +1,77 @@
+// Implementation: the ALU logic manipulates the x and y inputs
+// and operates on the resulting values, as follows:
+// if (zx == 1) set x = 0        // 16-bit constant
+// if (nx == 1) set x = !x       // bitwise not
+// if (zy == 1) set y = 0        // 16-bit constant
+// if (ny == 1) set y = !y       // bitwise not
+// if (f == 1)  set out = x + y  // integer 2's complement addition
+// if (f == 0)  set out = x & y  // bitwise and
+// if (no == 1) set out = !out   // bitwise not
+
+CHIP ALU-nostat {
+    IN  
+        x[16], y[16],  // 16-bit inputs        
+        zx, // zero the x input?
+        nx, // negate the x input?
+        zy, // zero the y input?
+        ny, // negate the y input?
+        f,  // compute out = x + y (if 1) or x & y (if 0)
+        no; // negate the out output?
+
+    OUT 
+        out[16]; // 16-bit output
+    PARTS:
+   // Put you code here:
+   
+   Not(in=zx, out=Notzx);
+   Not(in=nx, out=Notnx);
+
+
+
+   Way16And1(a=x, b=Notzx, out=Outzx);  // when zx = 0
+   Not16(in=Outzx, out=NotOutzx);       // when zx = 1
+
+   Way16And1(a=NotOutzx, b=nx, out=Outnx);
+   Way16And1(a=Outzx, b=Notnx, out=OutNotnx);
+   Or16(a=Outnx, b=OutNotnx, out=finalX);   
+
+
+
+
+
+
+   Not(in=zy, out=Notzy);
+   Not(in=ny, out=Notny);
+   Way16And1(a=y, b=Notzy, out=Outzy);
+   Not16(in=Outzy, out=NotOutzy);
+
+
+   Way16And1(a=NotOutzy, b=ny, out=Outny);
+   Way16And1(a=Outzy, b=Notny, out=OutNotny);
+   Or16(a=Outny, b=OutNotny, out=finalY); 
+
+
+
+
+   Add16(a=finalX, b=finalY, out=xPlusy);
+   And16(a=finalX, b=finalY, out=xAndy);
+
+
+
+   Not(in=f, out=Notf);
+
+   Way16And1(a=xPlusy, b=f, out=Outf);
+   Way16And1(a=xAndy, b=Notf, out=OutNotf);
+
+
+
+   Or16(a=Outf, b=OutNotf, out=evalNoOut);
+
+    Not(in=no, out=Notno);
+
+    Not16(in=evalNoOut, out=NotOut);
+
+    Way16And1(a=NotOut,b=no,out=NotOutFinal);
+    Way16And1(a=evalNoOut,b=Notno,out=OutFinal);
+    Or16(a=NotOutFinal, b=OutFinal, out=out);
+}
