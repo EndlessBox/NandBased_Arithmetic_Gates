@@ -1,0 +1,22 @@
+/**
+ * Nor16To1 gate: 
+ */
+
+CHIP Nor16To1 {
+    IN
+        a[16];
+    OUT
+        out;
+
+    PARTS:
+    Nor4To1(a=a[0..3], out=first);
+    Nor4To1(a=a[4..7], out=second);
+    Nor4To1(a=a[8..11], out=third);
+    Nor4To1(a=a[12..15], out=fourth);
+    
+
+    And(a=first, b=second, out=firstHalf);
+    And(a=third, b=fourth, out=secondHalf);
+
+    And(a=firstHalf, b=secondHalf, out=out);
+ }

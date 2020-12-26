@@ -1,0 +1,19 @@
+/**
+ * Nor4To1 gate: 
+ * out = AND(Nor (a[0], a[1]), Nor(a[2], a[3]))
+ *
+ */
+
+
+
+ CHIP Nor4To1 {
+    IN
+        a[4];
+    OUT
+        out;
+
+    PARTS:
+    Nor(a=a[0], b=a[1], out=firstHalf);
+    Nor(a=a[2], b=a[3], out=secondHalf);
+    And(a=firstHalf, b=secondHalf, out=out);
+ }

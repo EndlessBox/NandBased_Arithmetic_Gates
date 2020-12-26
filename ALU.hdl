@@ -43,4 +43,60 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+
+    
+   Not(in=zx, out=Notzx);
+   Not(in=nx, out=Notnx);
+
+
+   Way16And1(a=x, b=Notzx, out=Outzx);
+   Not16(in=Outzx, out=NotOutzx);
+
+   Way16And1(a=NotOutzx, b=nx, out=Outnx);
+   Way16And1(a=Outzx, b=Notnx, out=OutNotnx);
+   Or16(a=Outnx, b=OutNotnx, out=finalX);   
+
+
+
+
+
+
+   Not(in=zy, out=Notzy);
+   Not(in=ny, out=Notny);
+   Way16And1(a=y, b=Notzy, out=Outzy);
+   Not16(in=Outzy, out=NotOutzy);
+
+
+   Way16And1(a=NotOutzy, b=ny, out=Outny);
+   Way16And1(a=Outzy, b=Notny, out=OutNotny);
+   Or16(a=Outny, b=OutNotny, out=finalY); 
+
+
+
+
+   Add16(a=finalX, b=finalY, out=xPlusy);
+   And16(a=finalX, b=finalY, out=xAndy);
+
+
+
+   Not(in=f, out=Notf);
+
+   Way16And1(a=xPlusy, b=f, out=Outf);
+   Way16And1(a=xAndy, b=Notf, out=OutNotf);
+
+
+
+   Or16(a=Outf, b=OutNotf, out=evalNoOut);
+
+    Not(in=no, out=Notno);
+
+    Not16(in=evalNoOut, out=NotOut);
+
+    Way16And1(a=NotOut,b=no,out=NotOutF);
+    Way16And1(a=evalNoOut,b=Notno,out=OutF);
+    
+    Or16(a=NotOutF, b=OutF, out=out);
+    Or16(a=NotOutF, b=OutF, out[15]=ng);
+    Or16(a=NotOutF, b=OutF, out=zrCheck);
+    Nor16To1(a=zrCheck, out=zr);
 }
